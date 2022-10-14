@@ -4,6 +4,7 @@ window.addEventListener('load', () => {
     let previous = '';
     let current = '';
     let currentSign = null;
+    let resultShowing = false; // special behaviour - when result shows, math can still be done on it, however input overrides everything.
 
     const definitionList = {
         "Enter": "=",
@@ -75,6 +76,8 @@ window.addEventListener('load', () => {
             
             currentTextLine.textContent = '0';
             previousTextLine.textContent = previous;
+
+            resultShowing = false;
         },
         
         "DEL": function () {
@@ -105,6 +108,8 @@ window.addEventListener('load', () => {
                 current = result;
                 previous = '';
                 currentSign = null;
+                
+                resultShowing = true;
             } else {
                 if (current.length == 0) {
                     current = '0';
@@ -150,8 +155,17 @@ window.addEventListener('load', () => {
     for (const button of buttons) {
         button.addEventListener('click', () => {
             if (specials[button.textContent]) {
+                if (resultShowing) {
+                    resultShowing = false;
+                }
+
                 specials[button.textContent]()
             } else {
+                if (resultShowing) {
+                    resultShowing = false;
+                    specials['C']();
+                }
+
                 current = current + button.textContent;
                 currentTextLine.textContent = current;
             }
