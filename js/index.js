@@ -141,7 +141,7 @@ window.addEventListener('load', () => {
         ".": function () {
             if (current.length == 0) {
                 current = '0.';
-            } else if(current.charAt(current.length - 1) == '.') {
+            } else if (current.indexOf('.') != -1) {
                 return;
             } else {
                 current = current + '.';
